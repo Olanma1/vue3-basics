@@ -6,6 +6,12 @@
         <div class="user-profile_follower-count">
             <strong>Followers: </strong> {{ followers }}
         </div>
+<form class="user-profile_create-tweep" @submit.prevent="addNewTweep">
+  <label for="newTweep"><strong>New Tweep</strong></label>
+  <textarea id="newTweep" rows="4" v-model="newTweep" />
+<button>Tweep</button>
+</form>
+
     </div>
     <div class="user-profile_tweeps-wrapper">
       <TweepItem 
@@ -25,6 +31,7 @@ export default {
     name: "UserProfile",
     data() {
         return {
+          newTweep: '',
             followers: 0,
             user: {
                 id: 1,
@@ -58,6 +65,15 @@ export default {
         },
         toggleFavourite(id){
           console.log(`Favourited tweep #${id}`)
+        },
+  addNewTweep(){
+    if(this.newTweep !== 'draft'){
+    this.user.tweeps.unshift({
+    id: this.user.tweeps.length + 1,
+    content: this.newTweep
+  })
+}
+   this.newTweep = ''
         }
     },
     mounted() {
@@ -94,5 +110,14 @@ h1{
     margin-right: auto;
     padding: 0 20px;
     font-weight: bold;
+}
+.user-profile_tweeps-wrapper{
+  display: grid;
+  grid-gap: 10px;
+}
+.user-profile_create-tweep{  
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 </style>
