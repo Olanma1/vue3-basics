@@ -6,50 +6,65 @@
         <div class="user-profile_follower-count">
             <strong>Followers: </strong> {{ followers }}
         </div>
-
+    </div>
+    <div class="user-profile_tweeps-wrapper">
+      <TweepItem 
+        v-for="tweep in user.tweeps" 
+        :key="tweep.id" 
+        :username="user.username" 
+        :tweep="tweep" 
+        @favourite="toggleFavourite"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import TweepItem from './TweepItem.vue';
 export default {
-  name: 'UserProfile',
-  data(){
-    return{
-      followers: 0,
-      user: {
-        id: 1,
-        username: 'olanma',
-        firstName: 'Mary',
-        lastName: 'Olanma',
-        email: 'olanmamary2@gmail.com',
-        isAdmin: true,
-      }
-    }
-    
-  },
-
-  watch: {
- followers(newfollowerCount, oldfollowerCount){
-  if(oldfollowerCount < newfollowerCount){
-    console.log(`${this.user.username} has a new follower!`)
-  }
- }
-  },
-  computed: {
-fullName(){
-  return this.user.firstName + '' + this.user.lastName;
+    name: "UserProfile",
+    data() {
+        return {
+            followers: 0,
+            user: {
+                id: 1,
+                username: "olanma",
+                firstName: "Mary",
+                lastName: "Olanma",
+                email: "olanmamary2@gmail.com",
+                isAdmin: true,
+                tweeps: [
+                    { id: 1, content: "Social media is fun" },
+                    { id: 2, content: "My second post" }
+                ]
+            }
+        };
+    },
+    watch: {
+        followers(newfollowerCount, oldfollowerCount) {
+            if (oldfollowerCount < newfollowerCount) {
+                console.log(`${this.user.username} has a new follower!`);
+            }
+        }
+    },
+    computed: {
+        fullName() {
+            return this.user.firstName + "" + this.user.lastName;
+        }
+    },
+    methods: {
+        followUser() {
+            this.followers++;
+        },
+        toggleFavourite(id){
+          console.log(`Favourited tweep #${id}`)
+        }
+    },
+    mounted() {
+        this.followUser();
+    },
+    components: { TweepItem }
 }
-},
-methods: {
-  followUser(){
-this.followers++
-  }
-},
-mounted() {
-  this.followUser();
-}
-  }
 
 </script>
 
